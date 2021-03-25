@@ -2,6 +2,7 @@
 body {
     font-family: system;
     font-size: 1.5em;
+    overflow-x: hidden;
 }
 
 ul[class="nav"]{
@@ -9,7 +10,8 @@ ul[class="nav"]{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #026e02;
+    width: 50%;
+    background-color: #573af9;
 }
 
 .nav > li {
@@ -25,22 +27,22 @@ ul[class="nav"]{
 }
 
 .nav > li a:hover {
-    background-color: #39ca40;
+    background-color: #39cac5;
 }
 
 input, select {
-    width: 100%;
+    width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
-    display: inline-block;
+    display: block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
 input[type=submit] {
-    width: 100%;
-    background-color: #026e02;
+    width: 50%;
+    background-color: #573af9;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
