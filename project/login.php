@@ -29,7 +29,7 @@ if (isset($_POST["login"])) {
         flash("Email/Username or password missing");
     }
     if (!strpos($email, "@")) {
-        $isValid = false;
+        $email = null;
         //echo "<br>Invalid email<br>";
         flash("Invalid email");
     }
