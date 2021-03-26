@@ -20,12 +20,17 @@ if (isset($_POST["register"])) {
     }
     $isValid = true;
     //check if passwords match on the server side
-    if ($password == $confirm) {
-        //not necessary to show
-        //echo "Passwords match <br>";
+    // check password length
+    if (strlen($password) < 5) {
+        flash("Password is too short, please enter another password");
+        $isValid = false;
+    }
+    //check if passwords match on the server side
+    elseif ($password == $confirm) {
+        flash("Success!, Passwords match");
     }
     else {
-        flash("Passwords don't match");
+        flash("Passwords don't match, try again");
         $isValid = false;
     }
     if (!isset($email) || !isset($password) || !isset($confirm)) {
@@ -44,11 +49,11 @@ if (isset($_POST["register"])) {
             $r = $stmt->execute($params);
             $e = $stmt->errorInfo();
             if ($e[0] == "00000") {
-                flash("Successfully registered! Please login.");
+                flash("Welcome! You successfully registered, please login");
             }
             else {
                 if ($e[0] == "23000") {//code for duplicate entry
-                    flash("Username or email already exists.");
+                    flash("Either username or email is already registered, please try again");
                 }
                 else {
                     flash("An error occurred, please try again");
