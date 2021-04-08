@@ -66,4 +66,4 @@ if(isset($id)){
     <input type="submit" name="save" value="Update"/>
 </form>
 
-<?php require(__DIR__ . "/partials/flash.php");
+<?php require(__DIR__ . "/../partials/flash.php");
