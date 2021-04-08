@@ -24,7 +24,7 @@ if(isset($_POST["submit"])){
 }
 ?>
     <form method="POST">
-        <input name="Account Number" placeholder="Account Number"/>
+        <input name="account_number" placeholder="Account Number"/>
         <input type="submit" name="submit" value="Create"/>
     </form>
 <?php require(__DIR__ . "/../partials/flash.php");?>
