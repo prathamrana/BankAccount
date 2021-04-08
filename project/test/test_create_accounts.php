@@ -7,40 +7,25 @@ if (!has_role("Admin")) {
 }
 ?>
 
-    <form method="POST">
-        <label> Account Number </label>
-        <input type="number" name="account_number" />
-        <label>Account Type</label>
-        <select name="account_type">
-            <option value = "checking">checking</option>
-            <option value = "saving">saving</option>
-        </select>
-        <label>Balance</label>
-        <input type="number" min="1.00" name="Balance" />
-        <input type="submit" name="save" value="Create"/>
-    </form>
+    form method="POST">
+    <input name="Account Number" placeholder="Account Number"/>
+    <input type="submit" name="submit" value="Create"/>
 
 <?php
 
-if(isset($_POST["save"])){
+if(isset($_POST["submit"])){
     $account_number = $_POST["account_number"];
-    $account_type = $_POST["account_type"];
-    $user= get_user_id();
-    $balance = $_POST["balance"];
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, user_id, balance) VALUES(:account_number, :account_type, :user, :balance)");
+    $query = "INSERT INTO Accounts(account_number, user_id) Values (:account_number,:uid)";
+    $stmt = $db->prepare($query);
     $r = $stmt->execute([
         ":account_number" => $account_number,
-        ":account_type"=> $account_type,
-        ":user" => $user,
-        ":balance" => $balance
-    ]);
+        ":uid" => get_user_id()]);
     if($r){
-        flash("Created successfully with id: " . $db->lastInsertId());
+        flash("Account created successfully");
     }
     else{
-        $e = $stmt->errorInfo();
-        flash("Error creating: " . var_export($e, true));
+        flash("Something went wrong: " . var_export($stmt->errorInfo(), true));;
     }
 }
 ?>
