@@ -5,67 +5,67 @@ if (!has_role("Admin")) {
     flash("You don't have permission to access this page");
     die(header("Location: login.php"));
 }
-?>
-<?php
-//we'll put this at the top so both php block have access to it
-if(isset($_GET["id"])){
-    $id = $_GET["id"];
+$accountId = -1;
+if(isset($_GET["id"])) {
+    $accountId = $_GET["id"];
 }
+if($accountId <= 0){
+    flash("Invalid account!!!");
+}
+
 ?>
 <?php
 //saving
-if(isset($_POST["save"])){
+if(isset($_POST["submit"]) && $accountId > 0){
     $account_number = $_POST["account_number"];
     $account_type = $_POST["account_type"];
     $balance = $_POST["balance"];
     $db = getDB();
-    $user = get_user_id();
-    if(isset($id)){
-        $stmt = $db->prepare("UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance where id=:id");
-        $r = $stmt->execute([
+    $query = "UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance where id=:id";
+    $stmt = $db->prepare($query);
+    $r = $stmt->execute([
             ":account_number"=> $account_number,
             ":account_type"=>$account_type,
             ":balance"=>$balance,
-            ":id"=>$id
-        ]);
+            ":id"=>$accountId]);
         if($r){
-            flash("Updated successfully with id: " . $id);
+            flash("Updated account successfully");
         }
         else{
-            $e = $stmt->errorInfo();
-            flash("Error updating: " . var_export($e, true));
+            flash("Something went wrong: " . var_export($stmt->errorInfo(), true));
         }
-    }
-    else{
-        flash("ID isn't set, we need an ID in order to update");
-    }
 }
 ?>
 <?php
 //fetching
 $result = [];
-if(isset($id)){
-    $id = $_GET["id"];
+if($accountId >0){
+    $query = "SELECT account_number,account_type,balance FROM Accounts WHERE id=:id";
     $db = getDB();
-    $stmt = $db->prepare("SELECT * FROM Accounts where id = :id");
-    $r = $stmt->execute([":id"=>$id]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    echo var_export($result, true);
+    $stmt = $db->prepare($query);
+    $r = $stmt->execute([":id"=>$accountId]);
+    if($r){
+        //fetch
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    else{
+        flash("Error looking up tank: " . var_export($stmt->errorInfo(), true));
+    }
 }
 
 ?>
-
+<?php if(isset($result)):?>
 <form method="POST">
     <label>Account Number</label>
     <input type="number" name="account_number" value="<?php echo $result["account_number"];?>"/>
     <label>Account Type</label>
     <select name="account_type" value="<?php echo $result["account_type"];?>">
         <option value="checking" <?php echo ($result["account_type"] == "0"?'selected="selected"':'');?>>checking</option>
-        <option value="saving" <?php echo ($result["account_type"] == "2"?'selected="selected"':'');?>>saving</option>
+        <option value="saving" <?php echo ($result["account_type"] == "1"?'selected="selected"':'');?>>saving</option>
     </select>
     <label>Balance</label>
     <input type="number" min="1.00" name="balance" value="<?php echo $result["balance"];?>" />
-    <input type="submit" name="save" value="Update"/>
+    <input type="submit" name="submit" value="Edit"/>
 </form>
-
+<?php endif;?>
 <?php require(__DIR__ . "/../partials/flash.php");
