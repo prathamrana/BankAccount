@@ -21,13 +21,13 @@ if(isset($_POST["submit"]) && $accountId > 0){
     $account_type = $_POST["account_type"];
     $balance = $_POST["balance"];
     $db = getDB();
-    $query = "UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance where id=:id";
+    $query = "UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance where id=:aid";
     $stmt = $db->prepare($query);
     $r = $stmt->execute([
             ":account_number"=> $account_number,
             ":account_type"=>$account_type,
             ":balance"=>$balance,
-            ":id"=>$accountId]);
+            ":aid"=>$accountId]);
         if($r){
             flash("Updated account successfully");
         }
@@ -40,10 +40,10 @@ if(isset($_POST["submit"]) && $accountId > 0){
 //fetching
 $result = [];
 if($accountId >0){
-    $query = "SELECT account_number,account_type,balance FROM Accounts WHERE id=:id";
+    $query = "SELECT account_number,account_type,balance FROM Accounts WHERE id=:aid";
     $db = getDB();
     $stmt = $db->prepare($query);
-    $r = $stmt->execute([":id"=>$accountId]);
+    $r = $stmt->execute([":aid"=>$accountId]);
     if($r){
         //fetch
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -68,4 +68,4 @@ if($accountId >0){
     <input type="submit" name="submit" value="Edit"/>
 </form>
 <?php endif;?>
-<?php require(__DIR__ . "/../partials/flash.php");
+<?php require(__DIR__ . "/../partials/flash.php");?>

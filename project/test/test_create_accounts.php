@@ -7,10 +7,6 @@ if (!has_role("Admin")) {
 }
 ?>
 
-    form method="POST">
-    <input name="Account Number" placeholder="Account Number"/>
-    <input type="submit" name="submit" value="Create"/>
-
 <?php
 
 if(isset($_POST["submit"])){
@@ -29,4 +25,8 @@ if(isset($_POST["submit"])){
     }
 }
 ?>
+    <form method="POST">
+        <input name="Account Number" placeholder="Account Number"/>
+        <input type="submit" name="submit" value="Create"/>
+    </form>
 <?php require(__DIR__ . "/../partials/flash.php");
