@@ -50,7 +50,9 @@ if(isset($id)){
     $stmt = $db->prepare("SELECT * FROM Accounts where id = :id");
     $r = $stmt->execute([":id"=>$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo var_export($result, true);
 }
+
 ?>
 
 <form method="POST">
