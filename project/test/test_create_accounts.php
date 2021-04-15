@@ -37,8 +37,8 @@ if(isset($_POST["save"])){
         <input type="number"  name="account_number" />
         <label>Account Type</label>
         <select name="account_type">
-            <option value="0">Checking</option>
-            <option value="1">Savings</option>
+            <option value="checking">Checking</option>
+            <option value="saving">Savings</option>
         </select>
         <label>Balance</label>
         <input type="number" min="0.00"  name="balance"/>

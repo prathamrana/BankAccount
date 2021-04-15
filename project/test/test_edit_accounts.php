@@ -56,10 +56,10 @@ if(isset($id)){
     <form method="POST">
         <label>Account Number</label>
         <input name="account_number" placeholder="account_number" value="<?php echo $result["account_number"];?>"/>
-        <label>Type</label>
+        <label>Account Type</label>
         <select name="account_type" value="<?php echo $result["account_type"];?>">
-            <option value="0" <?php echo ($result["account_type"] == "0"?'selected="selected"':'');?>>Checking</option>
-            <option value="1" <?php echo ($result["account_type"] == "1"?'selected="selected"':'');?>>Savings</option>
+            <option value="Checking" <?php echo ($result["account_type"] == "0"?'selected="selected"':'');?>>Checking</option>
+            <option value="Saving" <?php echo ($result["account_type"] == "1"?'selected="selected"':'');?>>Savings</option>
         </select>
         <label>Balance</label>
         <input type="number" min="0.00" name="balance" value="<?php echo $result["balance"];?>" />
