@@ -28,20 +28,20 @@ if (isset($id)) {
 <?php if (isset($result) && !empty($result)): ?>
     <div class="card">
         <div class="card-title">
-            <?php safer_echo($result["account_number"]); ?>
+            Account Number: <?php safer_echo($result["account_number"]); ?>
         </div>
         <div class="card-body">
             <div>
-                <p>Details</p>
+                <p>Details about your account: </p>
+                <div>Account Name: <?php safer_echo($result["username"]); ?></div>
                 <div>Balance: <?php safer_echo($result["balance"]); ?></div>
                 <div>Account Type: <?php safer_echo($result["account_type"]); ?></div>
                 <div>Date Opened: <?php safer_echo($result["opened_date"]); ?></div>
-                <div>Customer: <?php safer_echo($result["username"]); ?></div>
             </div>
         </div>
     </div>
 <?php else: ?>
-    <p>Error looking up transaction</p>
+    <p>Error looking up account</p>
 <?php endif; ?>
 
 <?php require(__DIR__ . "/../partials/flash.php");?>

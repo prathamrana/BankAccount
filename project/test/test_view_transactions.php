@@ -34,7 +34,7 @@ if (isset($id)) {
         <div class="card-body">
             <div>
                 <h4>Transaction details</h4>
-                <div>Other Account: <?php safer_echo($result["act_dest_id"]); ?></div>
+                <div>From or Into Account ID: <?php safer_echo($result["act_dest_id"]); ?></div>
                 <div>Amount: <?php safer_echo($result["amount"]); ?></div>
                 <div>Type: <?php safer_echo($result["action_type"]); ?></div>
                 <div>Expected Total: <?php safer_echo($result["expected_total"]); ?></div>
