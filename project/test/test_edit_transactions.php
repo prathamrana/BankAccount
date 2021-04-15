@@ -85,7 +85,6 @@ if (isset($id)) {
     <form method="POST">
         <label>Amount</label>
         <input name="amount" placeholder="amount" value="<?php echo $result["amount"]; ?>"/>
-        <label>Type (Currently <?php echo $result["action_type"];?>)</label>
         <select name="type" value="<?php echo $result["action_type"];?>">
             <option value="Deposit">Deposit</option>
             <option value="Withdraw">Withdraw</option>
