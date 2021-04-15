@@ -12,23 +12,10 @@ require_once(__DIR__ . "/../lib/helpers.php");
         <?php endif; ?>
 
         <?php if (has_role("Admin")): ?>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                   data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Admin
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="nav-link" href="<?php echo getURL("test/test_create_accounts.php"); ?>">Create
-                        Account</a>
-                    <a class="nav-link" href="<?php echo getURL("test/test_list_accounts.php"); ?>">View
-                        Accounts</a>
-                    <a class="nav-link" href="<?php echo getURL("test/test_create_transactions.php"); ?>">Create
-                        Transaction</a>
-                    <a class="nav-link" href="<?php echo getURL("test/test_list_transactions.php"); ?>">View
-                        Transactions</a>
-                </div>
-            </li>
+            <li><a href="test_create_accounts.php">Create Account</a></li>
+            <li><a href="test_list_accounts.php">List Accounts</a></li>
+            <li><a href="test_create_transactions.php">Create Transaction</a></li>
+            <li><a href="test_list_transactions.php">List Transactions</a></li>
         <?php endif; ?>
 
         <?php if (is_logged_in()): ?>
