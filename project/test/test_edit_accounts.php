@@ -46,7 +46,7 @@ if($accountId >0){
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     else{
-        flash("Error looking up tank: " . var_export($stmt->errorInfo(), true));
+        flash("Error looking up account: " . var_export($stmt->errorInfo(), true));
     }
 }
 ?>
