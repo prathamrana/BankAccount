@@ -47,8 +47,8 @@ if (isset($_POST["search"]) && !empty($query)) {
                             <div><?php safer_echo($r["opened_date"]); ?></div>
                         </div>
                         <div>
-                            <div>Customer ID:</div>
-                            <div><?php safer_echo($r["user_id"]); ?></div>
+                            <div>Balance:</div>
+                            <div><?php safer_echo($r["balance"]); ?></div>
                         </div>
                         <div>
                             <a type="button" href="test_edit_accounts.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
