@@ -6,61 +6,59 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 ?>
-
 <?php
-$result = [];
-if(isset($_POST["account_number"])){
-    $account_number = $_POST["account_number"];
-    $isValid = true;
-    if(empty(trim($account_number))){
-        flash("You must provide a search criteria");
-        $isValid = false;
+$query = "";
+$results = [];
+if (isset($_POST["query"])) {
+    $query = $_POST["query"];
+}
+if (isset($_POST["search"]) && !empty($query)) {
+    $db = getDB();
+    $stmt = $db->prepare("SELECT id,account_number,account_type,balance,opened_date, user_id from Accounts WHERE account_number like :q LIMIT 10");
+    $r = $stmt->execute([":q" => "%$query%"]);
+    if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    if($isValid) {
-        $db = getDB();
-        $query = "SELECT id, account_number from Accounts WHERE account_number LIKE :account_number";
-        $stmt = $db->prepare($query);
-        $r = $stmt->execute([":account_number" => "%$account_number%"]);
-
-        if ($r) {
-            //fetch
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            flash("There was a problem fetching the results: " . var_export($stmt->errorInfo(), true));
-        }
+    else {
+        flash("There was a problem fetching the results");
     }
 }
 ?>
-<form method = "Post">
-<label for = "an"> Account Number</label>
-<input type = "text" name ="account_number" id ="an"/>
-    <input type = "submit" value = "Search"/>
-</form>
 
-<table>
-    <thead>
-    <th> Account ID</th>
-    <th> Account Number</th>
-    <th>Actions</th>
-    </thead>
-    <tbody>
-    <?php if(isset($result) && count($result) >0):?>
-        <?php foreach($result as $r):?>
-            <tr>
-                <td><?php echo $r["id"];?></td>
-                <td><?php echo $r["account_number"];?></td>
-                <td>
-                    <a type ="button" href="test_edit_accounts.php?accountId=<?php echo $r['id'];?>"Edit</a>
-                    <a type ="button" href="test_view_accounts.php?accountId=<?php echo $r['id'];?>"View</a>
-                </td>
-            </tr>
-        <? endforeach;?>
-    <?php else:?>
-        <tr>
-            <td colspan="100%"
-                No Results
-        </tr>
-    <?php endif;?>
-    </tbody>
-</table>
+    <form method="POST">
+        <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
+        <input type="submit" value="Search" name="search"/>
+    </form>
+    <div class="results">
+        <?php if (count($results) > 0): ?>
+            <div class="list-group">
+                <?php foreach ($results as $r): ?>
+                    <div class="list-group-item">
+                        <div>
+                            <div>Account Number:</div>
+                            <div><?php safer_echo($r["account_number"]); ?></div>
+                        </div>
+                        <div>
+                            <div>Account Type:</div>
+                            <div><?php safer_echo($r["account_type"]); ?></div>
+                        </div>
+                        <div>
+                            <div>Date Opened:</div>
+                            <div><?php safer_echo($r["opened_date"]); ?></div>
+                        </div>
+                        <div>
+                            <div>Balance:</div>
+                            <div><?php safer_echo($r["balance"]); ?></div>
+                        </div>
+                        <div>
+                            <a type="button" href="test_edit_accounts.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
+                            <a type="button" href="test_view_accounts.php?id=<?php safer_echo($r['id']); ?>">View</a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p>No results</p>
+        <?php endif; ?>
+    </div>
 <?php require(__DIR__ . "/../partials/flash.php");?>

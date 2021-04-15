@@ -7,24 +7,42 @@ if (!has_role("Admin")) {
 }
 ?>
 <?php
-if(isset($_POST["submit"])){
-    $account_number = $_POST["account_number"];
+if(isset($_POST["save"])){
+    //TODO add proper validation/checks
+    $account = $_POST["account_number"];
+    $account_type = $_POST["account_type"];
+    $balance = $_POST["balance"];
+    $opened_date = date('Y-m-d H:i:s');//calc
+    $user = get_user_id();
     $db = getDB();
-    $query = "INSERT INTO Accounts(account_number, user_id) VALUES (:account_number,:aid)";
-    $stmt = $db->prepare($query);
+    $stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, opened_date, user_id) VALUES(:account_number, :account_type, :balance, :opened_date, :user)");
     $r = $stmt->execute([
-        ":account_number"=>$account_number,
-        ":aid"=>get_user_id()]);
+        ":account_number"=>$account,
+        ":account_type"=>$account_type,
+        ":balance"=>$balance,
+        ":opened_date"=>$opened_date,
+        ":user"=>$user
+    ]);
     if($r){
-        flash("Account created successfully");
+        flash("Created successfully with id: " . $db->lastInsertId());
     }
     else{
-        flash("Something went wrong: " . var_export($stmt->errorInfo(), true));
+        $e = $stmt->errorInfo();
+        flash("Error creating: " . var_export($e, true));
     }
 }
 ?>
     <form method="POST">
-        <input name="account_number" placeholder="Account Number"/>
-        <input type="submit" name="submit" value="Create"/>
+        <label>Account Number</label>
+        <input type="number"  name="account_number" />
+        <label>Account Type</label>
+        <select name="account_type">
+            <option value="checking">Checking</option>
+            <option value="saving">Savings</option>
+        </select>
+        <label>Balance</label>
+        <input type="number" min="0.00"  name="balance"/>
+        <input type="submit" name="save" value="Create"/>
     </form>
+
 <?php require(__DIR__ . "/../partials/flash.php");?>
