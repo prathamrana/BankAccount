@@ -1,4 +1,4 @@
-<?php require(__DIR__ . "/../partials/nav.php"); ?>
+<?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
 if (!is_logged_in()) {
     flash("You must be logged in to access this page");
@@ -97,5 +97,4 @@ elseif (isset($_POST["save"]) &&$_POST["balance"]<5){
         <input type="number" min="0.00" step="0.01" name="balance"/>
         <input type="submit" name="save" value="Create"/>
     </form>
-
-<?php require(__DIR__ . "/../partials/flash.php");?>
+<?php require(__DIR__ . "/partials/flash.php");
