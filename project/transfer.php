@@ -37,8 +37,8 @@ if (isset($_POST["save"])) {
     $db = getDB();
 
     //Looking for the destination account
-    $stmt = $db->prepare("SELECT acc.account_number FROM Accounts as acc JOIN Users on acc.user_id = Users.id JOIN Names as n on n.user_id = Users.id WHERE acc.account_number LIKE :digits AND lastName = :last LIMIT 1");
-    $r = $stmt->execute([":digits" => "%$digits", ":last" => "$last"]);
+    $stmt = $db->prepare("SELECT acc.account_number FROM Accounts as acc JOIN Users on acc.user_id = Users.id JOIN Names as n on n.user_id = Users.id WHERE acc.account_number LIKE :digits = :last LIMIT 1");
+    $r = $stmt->execute([":digits" => "%$digits"]);
     if ($r){
         $resultExt = $stmt->fetch(PDO::FETCH_ASSOC);
         $dest = $resultExt["account_number"];
@@ -114,7 +114,7 @@ if (isset($_POST["save"])) {
     ]);
 
     if($r && $r2) {
-        flash("Succesfully completed your $type!");
+        flash("Successfully completed your $type!");
     }
     else{
         flash("Error updating your account balance");
