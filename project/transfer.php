@@ -135,7 +135,7 @@ if (isset($_POST["save"])) {
         <label>Amount</label>
         <input type="number" min="0.01" step="0.01" name="amount"/>
         <label>Memo</label>
-        <input type="text" name="memo" placeholder="Message"/>
+        <input type="text" name="memo" placeholder="Enter memo here"/>
         <input type="submit" name="save" value="Create"/>
     </form>
 <?php require(__DIR__ . "/partials/flash.php");

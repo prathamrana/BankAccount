@@ -10,28 +10,9 @@ if (!is_logged_in()) {
 }
 $db = getDB();
 
-$firstName = "";
-$lastName = "";
-$stmt = $db->prepare("SELECT email, username, firstName, lastName from Users WHERE id = :id LIMIT 1");
-$stmt->execute([":id" => get_user_id()]);
-$result = $stmt->fetch(PDO::FETCH_ASSOC);
-if ($result) {
-    $email = $result["email"];
-    $username = $result["username"];
-    $firstName = $result["firstName"];
-    $lastName = $result["lastName"];
-    $_SESSION["user"]["email"] = $email;
-    $_SESSION["user"]["username"] = $username;
-}
-
 //save data if we submitted the form
 if (isset($_POST["saved"])) {
     $isValid = true;
-
-    $newfirstName = $_POST["firstName"];
-    $newlastName = $_POST["lastName"];
-    $accountPrivacy =  $_POST["account_type"];
-
     //check if our email changed
     $newEmail = get_email();
     if (get_email() != $_POST["email"]) {
@@ -83,13 +64,13 @@ if (isset($_POST["saved"])) {
         }
     }
     if ($isValid) {
-        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, firstName= :firstName, lastName= :lastName, publicity= :publicity where id = :id");
+        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, first_name = :first_name, last_name = :last_name, privacy = :privacy where id = :id");
         $r = $stmt->execute([":email" => $newEmail,
             ":username" => $newUsername,
-            ":firstName" => $newfirstName,
-            ":lastName" => $newlastName,
             ":id" => get_user_id(),
-            ":publicity"=> $accountPrivacy
+            ":first_name" => $_POST["first_name"],
+            ":last_name" => $_POST["last_name"],
+            ":privacy" => $_POST["privacy"]
         ]);
         if ($r) {
             flash("Updated profile");
@@ -122,11 +103,12 @@ if (isset($_POST["saved"])) {
         if ($result) {
             $email = $result["email"];
             $username = $result["username"];
-            $firstName = $result["firstName"];
-            $lastName = $result["lastName"];
             //let's update our session too
             $_SESSION["user"]["email"] = $email;
             $_SESSION["user"]["username"] = $username;
+            $_SESSION["user"]["first_name"] = $result["first_name"];
+            $_SESSION["user"]["last_name"] = $result["last_name"];
+            $_SESSION["user"]["privacy"] = $result["privacy"];
         }
     }
     else{
@@ -139,14 +121,14 @@ if (isset($_POST["saved"])) {
         <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
         <label for="username">Username</label>
         <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
-        <label for="firstName">First name</label>
-        <input type="text" maxlength="20" name="firstName" value="<?php safer_echo($firstName); ?>"/>
-        <label for="lastName">Last name</label>
-        <input type="text" maxlength="20" name="lastName" value="<?php safer_echo($lastName); ?>"/>
+        <label for="first_name">First name</label>
+        <input type="text" maxlength="20" name="firstName" value="<?php safer_echo(get_first_name()); ?>"/>
+        <label for="last_name">Last name</label>
+        <input type="text" maxlength="20" name="lastName" value="<?php safer_echo(get_last_name()); ?>"/>
         <label>Would you like your account to be private or public?</label>
-        <select name="account_type">
-            <option value="public">Public</option>
-            <option value="private">Private</option>
+        <select class="form-control" id="privacy" name="privacy">
+            option value="private" <?php echo get_privacy() == "private" ? "selected": ""; ?>>Private</option>
+            <option value="public" <?php echo get_privacy() == "public" ? "selected": ""; ?>>Public</option>
         </select>
         <!-- DO NOT PRELOAD PASSWORD-->
         <label for="pw">Password</label>
