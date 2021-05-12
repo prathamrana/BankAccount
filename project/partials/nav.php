@@ -21,9 +21,10 @@ require_once(__DIR__ . "/../lib/helpers.php");
         <?php if (is_logged_in()): ?>
         <li><a href="newaccount.php">Open an Account</a></li>
         <li><a href="listaccounts.php">View Accounts</a></li>
-        <li><a href="dw.php">Deposit or Withdraw</a></li>
         <li><a href="myaccttransfer.php">Account Transfer</a></li>
-        <li><a href="transfer.php">Transfer</a></li>
+        <li><a href="transfer.php">External Transfer</a></li>
+        <li><a href="loan.php">Loan</a></li>
+            <li><a href="close_account.php">Close Account</a></li>
         <li><a href="profile.php">Profile</a></li>
         <li><a href="logout.php">Logout</a></li>
         <?php endif; ?>

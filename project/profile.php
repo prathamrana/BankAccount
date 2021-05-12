@@ -13,6 +13,7 @@ $db = getDB();
 $firstName = "";
 $lastName = "";
 $stmt = $db->prepare("SELECT email, username, firstName, lastName from Users WHERE id = :id LIMIT 1");
+
 $stmt->execute([":id" => get_user_id()]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($result) {
