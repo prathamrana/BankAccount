@@ -40,7 +40,7 @@
 
     <form method="POST">
         <div class="form-group">
-            <label for="account_dest">Account</label>
+            <label for="account_dest">Which Account Would You Like to Close?</label>
             <select class="form-control" id="account" name="account">
                 <?php foreach ($accounts as $r): ?>
                     <option value="<?php safer_echo($r["id"]); ?>">
